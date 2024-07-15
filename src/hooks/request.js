@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import Router from '../router'
 
-let hostURL
+let hostURL = 'http://47.102.122.191:31102'
 // if (location.hostname == 'amy.shuzhixinghua.com' || false) {
 //   hostURL = 'https://amy.shuzhixinghua.com'
 // } else {
@@ -11,7 +11,7 @@ let hostURL
 
 // 创建axios实例
 const request = axios.create({
-  // baseURL: hostURL,
+  baseURL: hostURL,
   timeout: 15000,// 请求超时时间
 })
 
