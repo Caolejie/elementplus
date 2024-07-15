@@ -1,0 +1,67 @@
+pipeline {
+  environment {
+    registry = "registry-vpc.cn-beijing.aliyuncs.com/jcs-test/mall-admin-test"
+    registryCredential = "dockerhub"
+    FAILED_STAGE=""
+  }
+  agent any
+  stages {
+    stage("Building image") {
+      steps {
+        script {
+          FAILED_STAGE=env.STAGE_NAME
+          docker.build(registry)
+        }
+      }
+    }
+    stage("Deploy Image") {
+      steps {
+        script {
+          FAILED_STAGE=env.STAGE_NAME
+          docker.withRegistry('https://registry-vpc.cn-beijing.aliyuncs.com/jcs-test/mall-admin-test', registryCredential) {
+            docker.image(registry).push("$GIT_COMMIT")
+          }
+        }
+      }
+    }
+    stage("Update k8s cluster") {
+      options {
+        timeout(time: 5, unit: 'MINUTES')
+      }
+      steps {
+        script {
+          FAILED_STAGE=env.STAGE_NAME
+
+          if (env.GIT_BRANCH == "origin/master") {
+              sh "cat k8s/prod/deployment.yml | sed 's/{{GIT_COMMIT}}/$GIT_COMMIT/g' | kubectl apply  -n default -f -"
+              sh "kubectl rollout status deployment/mall-admin -n default"
+          } else {
+              sh "cat k8s/test/deployment.yml | sed 's/{{GIT_COMMIT}}/$GIT_COMMIT/g' | kubectl apply  -n test -f -"
+              sh "kubectl rollout status deployment/mall-admin-test -n test"
+          }
+        }
+      }
+    }
+    stage('Remove Unused docker image') {
+      steps {
+        script {
+          FAILED_STAGE=env.STAGE_NAME
+        }
+        sh "docker rmi $registry:$GIT_COMMIT"
+      }
+    }
+  }
+  post {
+    aborted {
+      script {
+         if (FAILED_STAGE == "Update k8s cluster") {
+          if (env.GIT_BRANCH == "origin/master") {
+            sh "kubectl rollout undo deployment/mall-admin"
+          } else {
+            sh "kubectl rollout undo deployment/mall-admin-test"
+          }
+         }
+      }
+    }
+  }
+}

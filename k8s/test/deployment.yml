@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mall-admin-test
+spec:
+  type: NodePort
+  selector:
+    app: mall-admin-test
+  ports:
+    - protocol: TCP
+      port: 4173
+      nodePort: 31230
+      name: frontend-test
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mall-admin-test
+  annotations:
+    kubernetes.io/change-cause: registry-vpc.cn-beijing.aliyuncs.com/jcs-test/mall-admin-test:{{GIT_COMMIT}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mall-admin-test
+  template:
+    metadata:
+      labels:
+        app: mall-admin-test
+    spec:
+      containers:
+        - name: mall-admin-test
+          image: registry-vpc.cn-beijing.aliyuncs.com/jcs-test/mall-admin-test:{{GIT_COMMIT}}
+          ports:
+            - containerPort: 4173
+          livenessProbe:
+            tcpSocket:
+              port: 4173
+            initialDelaySeconds: 30
+            periodSeconds: 600
+          readinessProbe:
+            tcpSocket:
+              port: 4173
+            initialDelaySeconds: 5
+            periodSeconds: 60
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: API_ENV
+              value: development
+      imagePullSecrets:
+        - name: aliyun-registry
