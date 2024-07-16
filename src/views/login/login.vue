@@ -10,7 +10,11 @@
           <div class="form">
             <el-form ref="form" :model="form" @keyup.enter="loginForm">
               <el-form-item>
+<<<<<<< HEAD
                 <el-input v-model="form.username" placeholder="请输入用户名或手机号" prefix-icon="User"></el-input>
+=======
+                <el-input v-model="form.account" placeholder="请输入用户名或手机号" prefix-icon="User"></el-input>
+>>>>>>> 95f56df9cdc6da77f16f47c43af7ffdbe127b0c9
               </el-form-item>
               <el-form-item>
                 <el-input v-model="form.password" placeholder="请输入密码" prefix-icon="Lock" show-password></el-input>
@@ -34,7 +38,11 @@ export default {
   data() {
     return {
       form: {
+<<<<<<< HEAD
         username: "",
+=======
+        account: "",
+>>>>>>> 95f56df9cdc6da77f16f47c43af7ffdbe127b0c9
         password: "",
       },
       text: "你好",
@@ -61,6 +69,7 @@ export default {
       this.text = hello;
     },
     async loginForm() {
+<<<<<<< HEAD
       if(!this.form.username || !this.form.password){
         return
       }
@@ -68,6 +77,15 @@ export default {
       if(res.data.code === 200){
         localStorage.setItem("token", res.data.data.token);
         localStorage.setItem("nickname", res.data.data.username);
+=======
+      if(!this.form.account || !this.form.password){
+        return
+      }
+      const res = await this.$request.get("/api-mall/admin/api/v1/user/user_login",{params:this.form})
+      if(res.data.code === 200){
+        localStorage.setItem("token", res.data.data.token);
+        localStorage.setItem("nickname", res.data.data.nickname);
+>>>>>>> 95f56df9cdc6da77f16f47c43af7ffdbe127b0c9
         this.$message.success("登陆成功")
         this.$router.push('/order/list')
       }

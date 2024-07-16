@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { createApp, VueElement } from 'vue'
+=======
+import { createApp } from 'vue'
+>>>>>>> 95f56df9cdc6da77f16f47c43af7ffdbe127b0c9
 import App from './App.vue'
 import router from './router'
 import request, { hostURL } from '@/hooks/request.js'
@@ -10,8 +14,12 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import { uploadFile } from '@/utils/utils.js'
 import dayjs from 'dayjs'
+<<<<<<< HEAD
 // import axios from 'axios'
 // VueElement.prototype.$ajax = axios
+=======
+
+>>>>>>> 95f56df9cdc6da77f16f47c43af7ffdbe127b0c9
 const app = createApp(App)
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

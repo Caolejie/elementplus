@@ -91,6 +91,7 @@
             <el-menu-item index="/quiz/list">问卷管理</el-menu-item>
           </el-sub-menu>
 
+<<<<<<< HEAD
           <el-sub-menu index="9">
             <template #title>
               <el-icon>
@@ -101,6 +102,8 @@
             <el-menu-item index="/ceshi/fome">测试1</el-menu-item>
           </el-sub-menu>
 
+=======
+>>>>>>> 95f56df9cdc6da77f16f47c43af7ffdbe127b0c9
           <el-sub-menu index="account" v-if="role.account?.length || true">
             <template #title>
               <el-icon>

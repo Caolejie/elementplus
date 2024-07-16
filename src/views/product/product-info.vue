@@ -454,7 +454,11 @@ export default {
     // 查询商品详情
     async getProductInfo() {
       const res = await this.$request.get(
+<<<<<<< HEAD
         "/mall/cms/api/v1/product/detail?id=" + this.id
+=======
+        "/api-mall/admin/api/v1/products/detail?id=" + this.id
+>>>>>>> 95f56df9cdc6da77f16f47c43af7ffdbe127b0c9
       );
       if (res.data.code === 200) {
         let form = res.data.data;
@@ -505,8 +509,13 @@ export default {
       this.form.price = this.form.salesPrice //强制原价等于售价
       const res = await this.$request.post(
         this.form.productId
+<<<<<<< HEAD
           ? "/mall/cms/api/v1/product/update_product_info"
           : "/mall/cms/api/v1/product/add_product_info",
+=======
+          ? "/api-mall/admin/api/v1/products/modify"
+          : "/api-mall/admin/api/v1/products/add",
+>>>>>>> 95f56df9cdc6da77f16f47c43af7ffdbe127b0c9
         this.form
       );
       if (res.data.code === 200) {
@@ -534,7 +543,11 @@ export default {
       let formData = new FormData();
       formData.append("file", option.file);
       const res = await this.$request.post(
+<<<<<<< HEAD
         "/mall/cms/api/v1/product/uploadfile",
+=======
+        "/api-mall/admin/api/v1/products/uploadfile",
+>>>>>>> 95f56df9cdc6da77f16f47c43af7ffdbe127b0c9
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

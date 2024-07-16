@@ -129,6 +129,10 @@
           </el-popconfirm>
         </template>
       </el-table-column>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 95f56df9cdc6da77f16f47c43af7ffdbe127b0c9
     </el-table>
     <!-- 分页 -->
     <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="sizes, total, prev, pager, next" :total="totalNum" :currentPage="search.page" :pageSize="search.size">
