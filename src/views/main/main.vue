@@ -1,5 +1,6 @@
 <template>
-  <el-container>
+  <div>
+    <el-container>
     <el-aside :style="{ width: isCollapse ? 'fit-content' : '256px' }">
       <el-scrollbar>
         <div class="logo">数智兴华</div>
@@ -91,7 +92,6 @@
             <el-menu-item index="/quiz/list">问卷管理</el-menu-item>
           </el-sub-menu>
 
-<<<<<<< HEAD
           <el-sub-menu index="9">
             <template #title>
               <el-icon>
@@ -102,19 +102,7 @@
             <el-menu-item index="/ceshi/fome">测试1</el-menu-item>
           </el-sub-menu>
 
-=======
->>>>>>> 95f56df9cdc6da77f16f47c43af7ffdbe127b0c9
-          <el-sub-menu index="account" v-if="role.account?.length || true">
-            <template #title>
-              <el-icon>
-                <Operation />
-              </el-icon>
-              <span>权限管理</span>
-            </template>
-            <el-menu-item index="/account/list" v-if="role.account?.includes('账户列表') || true">账户列表</el-menu-item>
-            <el-menu-item index="/account/role" v-if="role.account?.includes('角色管理') || true">角色管理</el-menu-item>
-            <el-menu-item index="/account/log" v-if="role.account?.includes('操作日志') || true">操作日志</el-menu-item>
-          </el-sub-menu>
+          
 
         </el-menu>
       </el-scrollbar>
@@ -150,6 +138,8 @@
       </el-main>
     </el-container>
   </el-container>
+  </div>
+  
 </template>
 
 <script>

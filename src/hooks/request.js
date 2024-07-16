@@ -2,11 +2,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import Router from '../router'
 
-<<<<<<< HEAD
 let hostURL = 'http://47.102.122.191:31502'
-=======
-let hostURL = 'http://47.102.122.191:31102'
->>>>>>> 95f56df9cdc6da77f16f47c43af7ffdbe127b0c9
 // if (location.hostname == 'amy.shuzhixinghua.com' || false) {
 //   hostURL = 'https://amy.shuzhixinghua.com'
 // } else {

@@ -206,7 +206,6 @@ const router = createRouter({
       ]
     },
     {
-<<<<<<< HEAD
       path: '/ceshi',
       name: 'ceshi',
       meta: { title: "问卷" },
@@ -221,8 +220,6 @@ const router = createRouter({
       ]
     },
     {
-=======
->>>>>>> 95f56df9cdc6da77f16f47c43af7ffdbe127b0c9
       path: '/account',
       name: 'account',
       meta: { title: "权限管理" },
