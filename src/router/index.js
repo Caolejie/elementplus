@@ -214,8 +214,14 @@ const router = createRouter({
         {
           path: 'fome',
           name: 'ceshi-fome',
-          meta: { title: "问卷管理" },
+          meta: { title: "测试一" },
           component: () => import("@/views/ceshi/ceshi-fome.vue"),
+        },
+        {
+          path: 'fomeinfo',
+          name: 'fome-info',
+          meta: { title: "商品详情" },
+          component: () => import("@/views/ceshi/fome-info.vue"),
         },
       ]
     },

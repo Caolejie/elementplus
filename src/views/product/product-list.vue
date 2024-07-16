@@ -1,5 +1,7 @@
 <template>
-  <el-button type="primary" @click="$router.push(`/product/info`)" style="margin-bottom:10px;">新增商品</el-button>
+  
+  <div>
+    <el-button type="primary" @click="$router.push(`/product/info`)" style="margin-bottom:10px;">新增商品</el-button>
 
   <el-card shadow="never" style="margin: 10px 0;">
     <el-row :gutter="30">
@@ -129,16 +131,12 @@
           </el-popconfirm>
         </template>
       </el-table-column>
-<<<<<<< HEAD
-=======
-
->>>>>>> 95f56df9cdc6da77f16f47c43af7ffdbe127b0c9
     </el-table>
     <!-- 分页 -->
     <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="sizes, total, prev, pager, next" :total="totalNum" :currentPage="search.page" :pageSize="search.size">
     </el-pagination>
   </el-card>
-
+  </div>
 </template>
 
 <script>

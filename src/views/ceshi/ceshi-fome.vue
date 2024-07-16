@@ -17,7 +17,7 @@
     </el-row>
 
     <div style="text-align: right;">
-      <el-button type="primary" @click="getProductList()">查询</el-button>
+      <el-button type="primary" @click="aa()">查询</el-button>
       <el-button @click="resetSearch()">重置</el-button>
     </div>
 
@@ -25,14 +25,15 @@
 
   <el-card shadow="never">
     <!-- 表格区域 -->
-    <el-table :data="tableData" stripe>
+    
+    <el-table :data="tableData" @click="fomeinfo(scope.row.id)"  stripe>
       <el-table-column prop="id" label="商品ID" width="90" />
-      <el-table-column prop="name" label="商品名" />
+      <el-table-column prop="name"  label="商品名" />
       <el-table-column prop="originPrice" label="原价" width="100" />
       <el-table-column prop="normalPrice" label="售价" width="100" />
       <el-table-column prop="logicStock" label="逻辑库存" width="100" />
       <el-table-column prop="realStock" label="真实库存" width="100" />
-      <el-table-column prop="tags" label="描述" width="220"/>
+      <el-table-column prop="tags" label="描述" width="100"/>
       
       <el-table-column label="上架状态">
         <template #default="scope">
@@ -51,6 +52,7 @@
         <template #default="scope">
 
           <el-button link type="primary" size="small" @click="editProductItem(scope.row.id)">编辑</el-button>
+          <el-button link type="primary" size="small" @click="fomeinfo(scope.row.id)">查看详情</el-button>
 
           <el-popconfirm name="确定要删除该商品吗?" @confirm="deleteProduct(scope.row.id)">
             <template #reference>
@@ -66,6 +68,7 @@
     <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="sizes, total, prev, pager, next" :total="totalNum" :currentPage="search.page" :pageSize="search.size">
     </el-pagination>
     
+
   </el-card>
 </div>
   
@@ -73,25 +76,26 @@
 </template>
 
 <script>
+// import func from '../../../vue-temp/vue-editor-bridge';
 export default {
   data() {
     return {
       tableData: [],
       totalNum: 0,
       search: {
-        page: 1,
-        size: 10,
+        pageNum: 1,
+        pageSize: 10,
       },
       downloadId: null,
     };
   },
   created() {
     console.log(this.$route.query);
-    if (this.$route.query.page) {
-      this.search.page = +this.$route.query.page;
+    if (this.$route.query.pageNum) {
+      this.search.pageNum = +this.$route.query.pageNum;
     }
-    if (this.$route.query.size) {
-      this.search.size = +this.$route.query.size;
+    if (this.$route.query.pageSize) {
+      this.search.pageSize = +this.$route.query.pageSize;
     }
     if (this.$route.query.categoryId) {
       this.search.categoryId = +this.$route.query.categoryId;
@@ -111,35 +115,38 @@ export default {
     if (this.$route.query.id) {
       this.search.id = this.$route.query.id;
     }
-    this.getProductList();
+    this.aa();
 
   },
   methods: {
     // 获取商品列表
-    async getProductList() {
+    async aa() {
       const res = await this.$request.post(
         "/mall/cms/api/v1/product/get_product_by_page",
         this.search
       );
       if (res.data.code === 200) {
         this.tableData = res.data.data.list;
-        this.totalNum = res.data.data.total;
-        this.$router.push(
-          `/ceshi/fome?${this.changeParam(this.search)}`
-        );
+        this.totalNum = res.data.data.total; // 更新总记录数
+        this.$router.push(`/ceshi/fome?${this.changeParam(this.search)}`);
       }
     },
+    // 跳转详情页
+    fomeinfo(id) {
+      this.$router.push(`/ceshi/fomeinfo?id=${id}`);
+    },
+    
     // 每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
-      this.search.size = val;
-      this.getProductList();
+      this.search.pageSize = val;
+      this.aa();
     },
     // 当前页改变时触发 跳转其他页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      this.search.page = val;
-      this.getProductList();
+      this.search.pageNum = val;
+      this.aa();
     },
 
     // 上下架商品
@@ -149,7 +156,7 @@ export default {
       );
       if (res.data.code === 200) {
         this.$message.success(res.data.message);
-        this.getProductList();
+        this.aa();
       }
     },
     // 删除商品
@@ -159,7 +166,7 @@ export default {
       );
       if (res.data.code === 200) {
         this.$message.success(res.data.message);
-        this.getProductList();
+        this.aa();
       }
     },
     // 搜索重置
@@ -169,7 +176,7 @@ export default {
         size: this.search.size,
       };
       this.search = search;
-      this.getProductList();
+      this.aa();
     },
     // 品类文本
     getCategoryText(value) {
