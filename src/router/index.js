@@ -223,6 +223,12 @@ const router = createRouter({
           meta: { title: "商品详情" },
           component: () => import("@/views/ceshi/fome-info.vue"),
         },
+        {
+          path: 'change',
+          name: 'fome-change-info',
+          meta: { title: "商品bianji" },
+          component: () => import("@/views/ceshi/change-info.vue"),
+        },
       ]
     },
     {
