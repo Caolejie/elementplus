@@ -104,9 +104,9 @@ export default {
       if (res.data.code === 200) {
         this.tableData = res.data.data.list;
         this.totalNum = res.data.data.total; // 更新总记录数
-
       }
     },
+  
     // 跳转详情页
     fomeinfo(id) {
       this.$router.push(`/ceshi/fomeinfo?id=${id}`);
