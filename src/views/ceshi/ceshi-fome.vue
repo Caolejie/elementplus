@@ -109,7 +109,8 @@ export default {
   
     // 跳转详情页
     fomeinfo(id) {
-      this.$router.push(`/ceshi/fomeinfo?id=${id}`);
+      this.$router.push(`/product/info?id=${id}`);
+      // this.$router.push(`/ceshi/fomeinfo?id=${id}`);
     },
     
     // 每页条数改变时触发 选择一页显示多少行
@@ -158,7 +159,8 @@ export default {
     },
     // 点击编辑
     editProductItem(id) {
-      this.$router.push(`/ceshi/change?id=${id}`);
+      this.$router.push(`/product/info?id=${id}`);
+      // this.$router.push(`/ceshi/change?id=${id}`);
     },
     
   },

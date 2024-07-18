@@ -1,7 +1,5 @@
 <template>
-  
-  <div>
-    <el-page-header :content="id ? '商品详情':'新增商品'" @back="$router.back()" style="margin-bottom:10px;" />
+  <el-page-header :content="id ? '商品详情':'新增商品'" @back="$router.back()" style="margin-bottom:10px;" />
 
   <el-card shadow="never">
     <div class="content-box">
@@ -11,17 +9,10 @@
       </el-steps>
       <el-form :model="form" label-width="120px" :inline="true" ref="ruleFormRef" :rules="rules">
         <div v-show="active == 1">
-          <!-- <el-form-item label="标题:" prop="id" style="width:100%;">
-            <el-input v-model="form.id" />
-          </el-form-item> -->
 
           <el-form-item label="商品名:" prop="name" style="width:100%;">
             <el-input v-model="form.name" />
           </el-form-item>
-
-          <!-- <el-form-item label="商品创建时间:" prop="createTime" style="width:100%;">
-            <el-input v-model="form.createTime" />
-          </el-form-item> -->
 
           <el-form-item label="产品描述:" prop="description" style="width:100%;">
             <el-input v-model="form.description" />
@@ -38,7 +29,6 @@
               </el-icon>
             </el-upload>
           </el-form-item>
-
         </div>
 
         <div v-show="active == 2">
@@ -55,16 +45,10 @@
             <el-input v-model="form.showStock" type="number" />
           </el-form-item>
 
-          <!-- <el-form-item label="能否单独售卖:" prop="soldSeparately">
-            <el-input v-model="form.soldSeparately" type="number" />
-          </el-form-item> -->
-
           <el-form-item label="划线价:" prop="underlinedPrice">
             <el-input v-model="form.underlinedPrice" type="number" />
           </el-form-item>
-          <!-- <el-form-item label="更新时间:" prop="updateTime">
-            <el-input v-model="form.updateTime" type="number" />
-          </el-form-item> -->
+
 
           <el-form-item label="单位:" prop="unit">
             <el-input v-model="form.productBizInfo.unit" type="number" />
@@ -75,14 +59,9 @@
           <el-form-item label="每月数量:" prop="monthNum">
             <el-input v-model="form.productBizInfo.monthNum" type="number" />
           </el-form-item>
-          
-        
-          
-         
+
+  
         </div>
-
-
-
       </el-form>
 
       <div style="text-align:center;margin-top:50px;">
@@ -96,14 +75,12 @@
   <el-dialog v-model="imgDialogVisible">
     <img :src="dialogImageUrl" style="width:100%;" />
   </el-dialog>
-  </div>
 </template>
 
 <script>
 import address from "./address.json";
 export default {
   data() {
-
     return {
       active: 1,
       id: null, //商品ID
@@ -138,7 +115,6 @@ export default {
         normalPrice: [{ required: true, message: "请填写售价", trigger: "blur" },],
         realStock: [{ required: true, message: "请填写真实库存", trigger: "blur" }],
         imgUrl: [{ required: true, message: "图片", trigger: "blur" }],
-
       },
     };
   },
@@ -155,30 +131,7 @@ export default {
         "/mall/cms/api/v1/product/get_product_info?id=" + this.id
       );
       if (res.data.code === 200) {
-        let form = res.data.data;
-        form.areaList = [form.country];
-        delete form.country;
-        delete form.area;
-        // delete form.appellation;
-        this.FileList = [];
-        this.FileList1 = [];
-        form.desc.pics.forEach((item) => {
-          this.FileList.push({ url: item });
-        });
-        // 后期增加了pics是个数组，之前数据没有，需要做适配
-        if(Array.isArray(form.desc.attrMap.背后故事pics)){
-          form.desc.attrMap.背后故事pics.forEach((item) => {
-            this.FileList1.push({ url: item });
-          });
-        }else{
-          form.desc.attrMap.背后故事pics = []
-        }
-        
-        //库存特殊处理，传realStock实际修改的是realrealStock真实库存，但查询返回来的是realrealStock，为了回显修改
-        form.realStock = form.realStock
-        delete form.realStock
-
-        this.form = form;
+        this.form = res.data.data;
       }
     },
     //表单校验
@@ -190,13 +143,28 @@ export default {
         }
       });
     },
+    // 处理表单修改的数据，数据发送到后端
+    async saveData() {
+    try {
+      const res = await this.$request.post("/mall/cms/api/v1/product/update_product_info", this.form);
+      if (res.data.code === 200) {
+        this.$message.success("保存成功lalala");
+      } else {
+        this.$message.error("保存失败");
+      }
+    } catch (error) {
+        this.$message.error("网络错误");
+      }
+    },
     // 添加或更新商品
     async addProduct() {
-      this.form.originPrice = this.form.normalPrice //强制原价等于售价
+      this.form.price = this.form.salesPrice //强制原价等于售价
       const res = await this.$request.post(
-        this.form.productId
-          ? "/mall/cms/api/v1/product/get_product_by_page"
-          : "/mall/cms/api/v1/product/update_product_info",
+        this.id
+          // ? "/mall/cms/api/v1/product/update_product_info"
+          ? this.saveData()
+          : "/mall/cms/api/v1/product/add_product_info",
+          
         this.form
       );
       if (res.data.code === 200) {
@@ -204,7 +172,7 @@ export default {
         this.$router.back();
       }
     },
- 
+    
     // 上传图片
     async uploadImgs(option) {
       let formData = new FormData();
@@ -220,6 +188,7 @@ export default {
         option.onError();
       }
     },
+    
     // 封面图上传成功后
     handleImgSuccess2(url) {
       if (url) {
@@ -234,7 +203,7 @@ export default {
       this.form.desc.pics.splice(index, 1);
       return true;
     },
-
+  
     // 放大图片
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;

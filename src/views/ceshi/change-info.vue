@@ -281,7 +281,7 @@ export default {
     try {
       const res = await this.$request.post("/mall/cms/api/v1/product/update_product_info", this.changeinfo);
       if (res.data.code === 200) {
-        this.$message.success("保存成功");
+        this.$message.success("保存成功lalala");
       } else {
         this.$message.error("保存失败");
       }
