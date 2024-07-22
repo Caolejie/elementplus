@@ -106,7 +106,7 @@ export default {
     return {
       active: 1,
       id: null, //商品ID
-      fileList: [],
+      FileList: [],
       form: {
         originPrice: "", //原价
         normalPrice: "", //售价
@@ -171,20 +171,7 @@ export default {
         }
       });
     },
-    // 处理表单修改的数据，数据发送到后端
-    async saveData() {
-    try {
-      const res = await this.$request.post("/mall/cms/api/v1/product/update_product_info", this.form);
-      if (res.data.code === 200) {
-        this.$message.success("保存成功");
-        this.$router.back();
-      } else {
-        this.$message.error("保存失败");
-      }
-    } catch (error) {
-        this.$message.error("网络错误");
-      }
-    },
+
     // 添加或更新商品
     async addProduct() {
       this.form.price = this.form.salesPrice //强制原价等于售价
@@ -201,12 +188,13 @@ export default {
       }
     },
     
-    // 上传图片
+    // 上传图片validate
     async uploadImgs(option) {
       let formData = new FormData();
       formData.append("file", option.file);
+      this.FileList = option.file
       const res = await this.$request.post(
-        "/mall/cms/api/v1/product/update_product_info",
+        "/mall/miniapp/modules/userfileupload/uploadfile",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -220,7 +208,7 @@ export default {
     // 封面图上传成功后
     handleImgSuccess2(url) {
       if (url) {
-        this.form.desc.pics.push(url);
+        this.form.imgUrl.img.push(url);
       }
     },
 
@@ -228,7 +216,7 @@ export default {
     beforeRemove(option) {
       //当删除图片时候也应该移除表单中对应的图片
       let index = this.FileList.indexOf(option);
-      this.form.desc.pics.splice(index, 1);
+      this.form.imgUrl.img.splice(index, 1);
       return true;
     },
   
