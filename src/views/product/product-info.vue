@@ -188,13 +188,12 @@ export default {
       }
     },
     
-    // 上传图片validate
+    // 上传图片
     async uploadImgs(option) {
       let formData = new FormData();
       formData.append("file", option.file);
-      this.FileList = option.file
       const res = await this.$request.post(
-        "/mall/miniapp/modules/userfileupload/uploadfile",
+        "/mall/common/modules/fileupload/uploadfile",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -208,9 +207,10 @@ export default {
     // 封面图上传成功后
     handleImgSuccess2(url) {
       if (url) {
-        this.form.imgUrl.img.push(url);
+       this.form.imgUrl.img = url;
       }
     },
+    
 
     //删除图片时前置钩子
     beforeRemove(option) {
@@ -219,6 +219,7 @@ export default {
       this.form.imgUrl.img.splice(index, 1);
       return true;
     },
+    
   
     // 放大图片
     handlePictureCardPreview(file) {
