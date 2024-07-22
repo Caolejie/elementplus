@@ -183,7 +183,6 @@
         <div v-show="active == 2">
           <el-form-item label="封面图片:">
             <div class="img"><img :src="changeinfo.imgUrl.img" alt="产品图片"></div>
-            
           </el-form-item>
           <el-form-item label="商品介绍:">
             <el-input v-model="changeinfo.tags" :autosize="{ minRows: 2, maxRows: 6 }" type="textarea" style="margin-bottom:10px;" />
@@ -195,12 +194,7 @@
               <div class="img"><img :src="changeinfo.imgUrl.skuImg" alt="产品详情图片"></div>
               <div class="img"></div>
               <div class="img"></div>
-              <el-upload class="avatar-uploader" action="" :show-file-list="false" :http-request="uploadImgs" :on-success="handleImgSuccess3">
-                <img v-if="form.desc.attrMap.产区介绍pic" :src="form.desc.attrMap.产区介绍pic" class="avatar" />
-                <el-icon v-else class="avatar-uploader-icon">
-                  <Plus />
-                </el-icon>
-              </el-upload>
+              
             </div>
           </el-form-item>
 

@@ -33,7 +33,8 @@
       <el-table-column prop="normalPrice" label="售价" width="100" />
       <el-table-column prop="logicStock" label="逻辑库存" width="100" />
       <el-table-column prop="realStock" label="真实库存" width="100" />
-      <el-table-column prop="tags" label="描述" width="100"/>
+      <el-table-column prop="description" label="描述" width="100"/>
+      <el-table-column prop="tags" label="标签" width="100"/>
       
 
       <el-table-column fixed="right" label="操作" width="280">
@@ -92,7 +93,6 @@ export default {
       this.search.id = this.$route.query.id;
     }
     this.aa();
-
   },
   methods: {
     // 获取商品列表
@@ -145,18 +145,7 @@ export default {
       this.search = search;
       this.aa();
     },
-    // 品类文本
-    getCategoryText(value) {
-      if (value == 1) {
-        return "红葡萄酒";
-      } else if (value == 2) {
-        return "白葡萄酒";
-      } else if (value == 3) {
-        return "起泡酒";
-      } else {
-        return value;
-      }
-    },
+
     // 点击编辑
     editProductItem(id) {
       this.$router.push(`/product/info?id=${id}`);

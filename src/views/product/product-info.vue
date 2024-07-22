@@ -1,5 +1,7 @@
 <template>
-  <el-page-header :content="id ? '商品详情':'新增商品'" @back="$router.back()" style="margin-bottom:10px;" />
+  
+  <div>
+    <el-page-header :content="id ? '商品详情':'新增商品'" @back="$router.back()" style="margin-bottom:10px;" />
 
   <el-card shadow="never">
     <div class="content-box">
@@ -13,15 +15,25 @@
           <el-form-item label="商品名:" prop="name" style="width:100%;">
             <el-input v-model="form.name" />
           </el-form-item>
-
+          <el-form-item label="商品英文名:" prop="enName" style="width:100%;">
+            <el-input v-model="form.enName" />
+          </el-form-item>
+          <el-form-item label="原价:" prop="originPrice" style="width:100%;">
+            <el-input v-model="form.originPrice" />
+          </el-form-item>
           <el-form-item label="产品描述:" prop="description" style="width:100%;">
             <el-input v-model="form.description" />
           </el-form-item>
-
+          <el-form-item label="产品分类ID:" prop="productBaseInfoId" style="width:100%;">
+            <el-input v-model="form.productBizInfo.productBaseInfoId" type="number" />
+          </el-form-item>
           <el-form-item label="售价:" prop="normalPrice">
             <el-input v-model="form.normalPrice" type="number" />
           </el-form-item>
-
+          <el-form-item label="封面图片:">
+            <div class="img"><img :src="form.imgUrl.img" alt="产品图片"></div>
+            <div class="img"><img :src="form.imgUrl.skuImg" alt="产品详情图片"></div>
+          </el-form-item>
           <el-form-item label="商品图:" style="width:100%;">
             <el-upload action="" list-type="picture-card" :file-list="FileList" :http-request="uploadImgs" :before-remove="beforeRemove" :on-preview="handlePictureCardPreview" :on-success="handleImgSuccess2">
               <el-icon>
@@ -44,6 +56,16 @@
           <el-form-item label="展示库存:" prop="showStock">
             <el-input v-model="form.showStock" type="number" />
           </el-form-item>
+          <el-form-item label="是否有库存:" prop="soldSeparately">
+            <el-input v-model="form.soldSeparately" />
+          </el-form-item>
+
+          <el-form-item label="更新时间:" prop="updateTime" style="width:100%;">
+            <el-input v-model="form.updateTime" />
+          </el-form-item>
+          <el-form-item label="创建时间:" prop="createTime" style="width:100%;">
+            <el-input v-model="form.createTime" />
+          </el-form-item>
 
           <el-form-item label="划线价:" prop="underlinedPrice">
             <el-input v-model="form.underlinedPrice" type="number" />
@@ -51,7 +73,7 @@
 
 
           <el-form-item label="单位:" prop="unit">
-            <el-input v-model="form.productBizInfo.unit" type="number" />
+            <el-input v-model="form.productBizInfo.unit" />
           </el-form-item>
           <el-form-item label="克数:" prop="unitWeight">
             <el-input v-model="form.productBizInfo.unitWeight" type="number" />
@@ -75,8 +97,8 @@
   <el-dialog v-model="imgDialogVisible">
     <img :src="dialogImageUrl" style="width:100%;" />
   </el-dialog>
+  </div>
 </template>
-
 <script>
 import address from "./address.json";
 export default {
@@ -89,7 +111,12 @@ export default {
         originPrice: "", //原价
         normalPrice: "", //售价
         realStock: "", //真实库存
+        logicStock: 0,
         name: "", //名字
+        enName: "",
+        createTime:"",
+        updateTime: "",
+        soldSeparately:"",
         imgUrl: {
           img: "",
           skuImg: "",
@@ -100,15 +127,15 @@ export default {
           monthNum: 0,
           unit: "",
           unitWeight: 0,
+          productBaseInfoId:0,
         },
       },
       
       address: address,
       rules: {
-        
-        id: [{ required: true, message: "请填写标题", trigger: "blur" }],
         name: [{ required: true, message: "请填写商品名称", trigger: "blur" }],
-        description: [{ required: true, message: "请填写产品描述", trigger: "blur" }],
+        enName: [{ required: false, message: "请填写商英文名称", trigger: "blur" }],
+        description: [{ required: false, message: "请填写产品描述", trigger: "blur" }],
         logicStock: [{ required: true, message: "请填写逻辑库存", trigger: "blur" }],
         underlinedPrice	: [{ required: true, message: "划线价", trigger: "blur" }],
         showStock: [{ required: true, message: "展示库存", trigger: "blur" }],
@@ -140,6 +167,7 @@ export default {
         if (valid) {
           //表单校验成功
           this.addProduct();
+          
         }
       });
     },
@@ -148,7 +176,8 @@ export default {
     try {
       const res = await this.$request.post("/mall/cms/api/v1/product/update_product_info", this.form);
       if (res.data.code === 200) {
-        this.$message.success("保存成功lalala");
+        this.$message.success("保存成功");
+        this.$router.back();
       } else {
         this.$message.error("保存失败");
       }
@@ -161,8 +190,7 @@ export default {
       this.form.price = this.form.salesPrice //强制原价等于售价
       const res = await this.$request.post(
         this.id
-          // ? "/mall/cms/api/v1/product/update_product_info"
-          ? this.saveData()
+          ? "/mall/cms/api/v1/product/update_product_info"
           : "/mall/cms/api/v1/product/add_product_info",
           
         this.form
@@ -261,4 +289,24 @@ export default {
   height: 148px;
   text-align: center;
 }
+.img {
+  margin-right: 10px;
+  width: 148px;
+  height: 148px;
+  border-style: dashed; 
+  border-width: 1px;    
+  border-color: #000;  
+  border-radius: 10px; 
+}
+.zhanshi {
+  width: 348px;
+  height: 32px;
+  border-style: solid; 
+  border-width: 1px;    
+  border-color: rgb(228, 221, 221);  
+  border-radius: 3px; 
+}
+.img img {
+    width: 100%;
+  }
 </style>
