@@ -109,8 +109,13 @@
               </el-icon>
               <span>element</span>
             </template>
-            <el-menu-item index="/element/demo">demo</el-menu-item>
+            <el-menu-item index="/element/basic">basic-demo</el-menu-item>
+            <el-menu-item index="/element/form">form-demo</el-menu-item>
+            <el-menu-item index="/element/feedback">feedback-demo</el-menu-item>
+            <el-menu-item index="/element/navigation">navigation-demo</el-menu-item>
+            <el-menu-item index="/element/others">others-demo</el-menu-item>
           </el-sub-menu>
+          
           
 
         </el-menu>

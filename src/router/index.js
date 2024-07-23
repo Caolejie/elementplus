@@ -234,17 +234,44 @@ const router = createRouter({
     {
       path: '/element',
       name: 'element',
-      meta: { title: "element组件demo集合页" },
+      meta: { title: "element" },
       component: () => import("@/views/main/main.vue"),
       children: [
         {
-          path: 'demo',
-          name: 'element-demo',
-          meta: { title: "demo集合页" },
-          component: () => import("@/views/element/element-demo.vue"),
-        }
+          path: 'basic',
+          name: 'basicdemo',
+          meta: { title: "basicdemo" },
+          component: () => import("@/views/element/basic-demo.vue"),
+        },
+        {
+          path: 'form',
+          name: 'formdemo',
+          meta: { title: "formdemo" },
+          component: () => import("@/views/element/form-demo.vue"),
+        },
+        
+        
+        {
+          path: 'navigation',
+          name: 'navigationdemo',
+          meta: { title: "navigationdemo" },
+          component: () => import("@/views/element/navigation-demo.vue"),
+        },
+        {
+          path: 'feedback',
+          name: 'Feedbackdemo',
+          meta: { title: "Feedbackdemo" },
+          component: () => import("@/views/element/Feedback-demo.vue"),
+        },
+        {
+          path: 'others',
+          name: 'otherdemo',
+          meta: { title: "otherdemo" },
+          component: () => import("@/views/element/other-demo.vue"),
+        },
       ]
     },
+    
     {
       path: '/account',
       name: 'account',
