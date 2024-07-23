@@ -102,6 +102,15 @@
             <el-menu-item index="/ceshi/fome">测试1</el-menu-item>
           </el-sub-menu>
 
+          <el-sub-menu index="10">
+            <template #title>
+              <el-icon>
+                <DocumentChecked />
+              </el-icon>
+              <span>element</span>
+            </template>
+            <el-menu-item index="/element/demo">demo</el-menu-item>
+          </el-sub-menu>
           
 
         </el-menu>

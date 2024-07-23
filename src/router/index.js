@@ -232,6 +232,20 @@ const router = createRouter({
       ]
     },
     {
+      path: '/element',
+      name: 'element',
+      meta: { title: "element组件demo集合页" },
+      component: () => import("@/views/main/main.vue"),
+      children: [
+        {
+          path: 'demo',
+          name: 'element-demo',
+          meta: { title: "demo集合页" },
+          component: () => import("@/views/element/element-demo.vue"),
+        }
+      ]
+    },
+    {
       path: '/account',
       name: 'account',
       meta: { title: "权限管理" },

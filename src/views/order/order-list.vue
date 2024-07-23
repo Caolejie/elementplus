@@ -76,7 +76,7 @@
 
     </el-table>
     <!-- 分页 -->
-    <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="sizes, total, prev, pager, next" :total="totalNum" :currentPage="search.page" :pageSize="search.size">
+    <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="sizes, total, prev, pager, next" :total="totalNum" :currentPage="search.pageNumNum" :pageNumSize="search.pageSize">
     </el-pagination>
   </el-card>
 
@@ -88,8 +88,8 @@ export default {
     return {
       date: [],
       search: {
-        page: 1,
-        size: 10,
+        pageNum: 1,
+        pageSize: 10,
       },
       totalNum: 0,
       tableData: [],
@@ -97,11 +97,11 @@ export default {
     };
   },
   created() {
-    if (this.$route.query.page) {
-      this.search.page = +this.$route.query.page;
+    if (this.$route.query.pageNum) {
+      this.search.pageNum = +this.$route.query.pageNum;
     }
-    if (this.$route.query.size) {
-      this.search.size = +this.$route.query.size;
+    if (this.$route.query.pageSize) {
+      this.search.pageSize = +this.$route.query.pageSize;
     }
     if (this.$route.query.oid) {
       this.search.oid = this.$route.query.oid;
@@ -118,7 +118,7 @@ export default {
     // 查询订单列表
     async getOrderList() {
       const res = await this.$request.post(
-        "/api-mall/admin/api/v1/order/find_order_list",
+        "/mall/user/api/v1/mall_order/query_order_by_page",
         this.search
       );
       if (res.data.code === 200) {
@@ -149,9 +149,9 @@ export default {
       }
     },
     // 每页条数改变时触发 选择一页显示多少行
-    handleSizeChange(val) {
+    handlepsizeChange(val) {
       console.log(`每页 ${val} 条`);
-      this.search.size = val;
+      this.search.pageSize = val;
       this.getOrderList();
     },
     // 对象转get参数
@@ -169,7 +169,7 @@ export default {
     // 当前页改变时触发 跳转其他页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      this.search.page = val;
+      this.search.pageNum = val;
       this.getOrderList();
     },
     // 订单操作发货
@@ -199,8 +199,8 @@ export default {
     // 点击重制按钮
     resetSearch() {
       let search = {
-        page: this.search.page,
-        size: this.search.size,
+        pageNum: this.search.pageNumNum,
+        pageSize: this.search.pageSize,
       };
       this.search = search;
       this.date = [];
@@ -220,8 +220,8 @@ export default {
     async exportExcel() {
       this.exportLoading = true;
       let postData = this.$deepClone(this.search);
-      delete postData.page;
-      delete postData.size;
+      delete postData.pageNum;
+      delete postData.pageSize;
 
       const res = await this.$request({
         method: "post",
