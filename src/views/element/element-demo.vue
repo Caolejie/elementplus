@@ -110,7 +110,7 @@ export default {
         checkAll: false,
         checkedCities: ['一类', '二类'],
         cities: cityOptions,
-        isIndeterminate: true，
+        isIndeterminate: true,
         //
         count: 0
       };
