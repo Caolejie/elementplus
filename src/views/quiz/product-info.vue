@@ -79,7 +79,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-库存
+
           <el-form-item label="标签:" style="width:100%;" prop="tags">
             <el-tag v-for="tag in form.tags" :key="tag" closable :disable-transitions="false" @close="form.tags.splice(form.tags.indexOf(tag), 1)" style="margin-right:10px;">
               {{ tag }}

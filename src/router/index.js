@@ -271,7 +271,26 @@ const router = createRouter({
         },
       ]
     },
-    
+    {
+      path: '/user-master',
+      name: 'user-master',
+      meta: { title: "用户管理" },
+      component: () => import("@/views/main/main.vue"),
+      children: [
+        {
+          path: 'list',
+          name: 'user-list',
+          meta: { title: "用户列表" },
+          component: () => import("@/views/user-master/user-list.vue"),
+        },
+        {
+          path: 'info',
+          name: 'user-info',
+          meta: { title: "用户详情" },
+          component: () => import("@/views/user-master/user-info.vue"),
+        },
+      ]
+    },
     {
       path: '/account',
       name: 'account',

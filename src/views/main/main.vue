@@ -116,7 +116,16 @@
             <el-menu-item index="/element/others">others-demo</el-menu-item>
           </el-sub-menu>
           
-          
+          <el-sub-menu index="11">
+            <template #title>
+              <el-icon>
+                <user />
+              </el-icon>
+              <span>用户管理</span>
+            </template>
+            <el-menu-item index="/user-master/list">用户列表</el-menu-item>
+            <!-- <el-menu-item index="/user-master/info">用户详情</el-menu-item> -->
+          </el-sub-menu>
 
         </el-menu>
       </el-scrollbar>
