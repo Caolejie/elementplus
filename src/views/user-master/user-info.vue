@@ -1,15 +1,16 @@
 <template>
   <div>
     <el-breadcrumb separator="/">
-    <el-breadcrumb-item :to="{ path: '/user-master' }">
+    <el-breadcrumb-item :to="{ path: '/login' }">
       <el-icon>
         <House />
       </el-icon>
     </el-breadcrumb-item>
     <el-breadcrumb-item>
-      用户管理
+      <a href="/user-master/list">用户管理</a>
+      
     </el-breadcrumb-item>
-    <el-breadcrumb-item><a href="/">用户详情</a></el-breadcrumb-item>
+    <el-breadcrumb-item>用户详情</el-breadcrumb-item>
     </el-breadcrumb>
 
 <!-- 基本信息 -->
