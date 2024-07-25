@@ -18,24 +18,32 @@
           <el-col :xs="24" :sm="12" :md="8" :lg="6">
             <el-form-item label="问卷状态:">
               <el-select v-model="search.type" placeholder="请选择" style="width:100%;" clearable >
-                <el-option label="1" value="1" />
-                <el-option label="2" value="2" />
+                <el-option label="完成个人问卷" value="完成个人问卷" />
+                <el-option label="未完成个人问卷" value="未完成个人问卷" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="8" :lg="6">
+            <el-form-item label="亲友问卷状态:">
+              <el-select v-model="search.type" placeholder="请选择" style="width:100%;" clearable >
+                <el-option label="完成亲友问卷" value="完成个人问卷" />
+                <el-option label="未完成亲友问卷" value="未完成个人问卷" />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="8" :lg="6">
             <el-form-item label="个人订单状态:">
               <el-select v-model="search.isCombos" placeholder="请选择" style="width:100%;" clearable >
-                <el-option label="1" value="1" />
-                <el-option label="1" value="1" />
+                <el-option label="已下个人单" value="1" />
+                <el-option label="未下个人单" value="1" />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="8" :lg="6">
             <el-form-item label="送礼状态:">
               <el-select v-model="search.userBizInfo" placeholder="请选择" style="width:100%;" clearable >
-                <el-option label="1" value="1" />
-                <el-option label="2" value="2" />
+                <el-option label="已送礼" value="1" />
+                <el-option label="未送礼" value="2" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -52,13 +60,14 @@
     <el-table :data="userData" style="flex:1;" v-loading="loading">
       <el-table-column prop="nickName" label="用户昵称" />
       <el-table-column label="头像" width="100">  
-        <template #default="scope">  
+        <!-- <template #default="scope">  
           <img :src="scope.row.avatarUrl" alt="头像" style="width: 100%; height: auto;">  
-        </template>  
+        </template>   -->
       </el-table-column>  
       <el-table-column prop="phone" label="手机号" />
       <el-table-column prop="umionld" label="问卷状态" />
       <el-table-column prop="openId" label="个人订单状态"  />
+      <el-table-column prop="openId" label="亲友订单状态"  />
       <el-table-column prop="userBizInfo" label="送礼状态"  />
       <el-table-column fixed="right" label="操作" width="100">
         <template #default="scope">

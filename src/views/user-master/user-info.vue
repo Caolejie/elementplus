@@ -13,10 +13,10 @@
     </el-breadcrumb>
 
 <!-- 基本信息 -->
-<el-card shadow="never" style="margin: 10px 0;">
+<el-card shadow="never" :model="form" style="margin: 10px 0;">
     <el-descriptions title="基本信息" stripe>
-      <el-descriptions-item label="用户昵称:">444</el-descriptions-item>
-      <el-descriptions-item label="手机号:">18100000000</el-descriptions-item>
+      <el-descriptions-item label="用户昵称:">{{form.nickName}}</el-descriptions-item>
+      <el-descriptions-item label="手机号:">{{form.phone}}</el-descriptions-item>
       <el-descriptions-item label="openid:">222</el-descriptions-item>
       <el-descriptions-item label="用户头像:"></el-descriptions-item>
     </el-descriptions>
@@ -69,7 +69,7 @@
 export default {
   data() {
     return {
-      
+      form:{},
       tableData: [],
       totalNum: 0,
       search: {
@@ -101,46 +101,27 @@ export default {
     if (this.$route.query.id) {
       this.search.id = this.$route.query.id;
     }
-    this.aa();
+    this.getuserInfo();
     
     console.log(this.$route.query);
     if (this.$route.query.id) {
       this.id = this.$route.query.id;
     }
-    this.bb();
+    this.getuserInfo();
   },
   methods: {
     
-    // 查询用户列表
-    async getProductInfo() {
-      const res = await this.$request.get(
-        "/mall/user/api/v1/user_info/get_auth?"
-      );
-      if (res.data.code === 200) {
-        this.tableData = res.data.data.list;
-        this.totalNum = res.data.data.total;
-      }
-    },
-     // 查询用户详情
-    async bb() {
-      const res = await this.$request.get(
-        "/mall/cms/api/v1/user/get_user_info?id=" + this.id
-      );
-      if (res.data.code === 200) {
-        this.fomeInfo = res.data.data;
-      }
-    },
+
     // 获取用户列表
-    async aa() {
-      const res = await this.$request.post(
-        "/mall/cms/api/v1/user/get_user_by_page",
-        this.search
+    async getuserInfo() {
+      const res = await this.$request.get(
+        "/mall/cms/api/v1/user/get_user_complete_info?id=" + this.id
       );
       if (res.data.code === 200) {
-        this.tableData = res.data.data.list;
-        this.totalNum = res.data.data.total; // 更新总记录数
+        this.form = res.data.data;
       }
     },
+
   
     // 跳转详情页
     fomeinfo(id) {
@@ -152,13 +133,13 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       this.search.pageSize = val;
-      this.aa();
+      this.getuserInfo();
     },
     // 当前页改变时触发 跳转其他页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.search.pageNum = val;
-      this.aa();
+      this.getuserInfo();
     },
 
     // 删除商品
@@ -168,7 +149,7 @@ export default {
       );
       if (res.data.code === 200) {
         this.$message.success(res.data.message);
-        this.aa();
+        this.getuserInfo();
       }
     },
     // 搜索重置
@@ -178,7 +159,7 @@ export default {
         size: this.search.size,
       };
       this.search = search;
-      this.aa();
+      this.getuserInfo();
     },
 
     // 点击编辑
