@@ -75,7 +75,6 @@ export default {
         pageNum: 1,
         pageSize: 10,
       },
-      downloadId: null,
     };
   },
   created() {
@@ -108,10 +107,10 @@ export default {
     },
   
     // 跳转详情页
-    fomeinfo(id) {
-      this.$router.push(`/product/info?id=${id}`);
-      // this.$router.push(`/ceshi/fomeinfo?id=${id}`);
-    },
+    // fomeinfo(id) {
+    //   this.$router.push(`/product/info?id=${id}`);
+    //   // this.$router.push(`/ceshi/fomeinfo?id=${id}`);
+    // },
     
     // 每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {
@@ -139,8 +138,8 @@ export default {
     // 搜索重置
     resetSearch() {
       let search = {
-        page: this.search.page,
-        size: this.search.size,
+        page: this.search.pageNum,
+        size: this.search.pageSize,
       };
       this.search = search;
       this.aa();
@@ -149,7 +148,6 @@ export default {
     // 点击编辑
     editProductItem(id) {
       this.$router.push(`/product/info?id=${id}`);
-      // this.$router.push(`/ceshi/change?id=${id}`);
     },
     
   },

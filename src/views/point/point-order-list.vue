@@ -2,7 +2,7 @@
   <div style="height:100%;display:flex;flex-direction:column;">
 
     <!-- 查询区域 -->
-    <!-- <el-card shadow="never" style="margin: 10px 0;">
+    <el-card shadow="never" style="margin: 10px 0;">
       <el-form :model="search">
         <el-row :gutter="30">
           <el-col :xs="24" :sm="12" :md="8" :lg="6">
@@ -38,7 +38,7 @@
         <el-button @click="resetSearch()">重置</el-button>
       </div>
 
-    </el-card> -->
+    </el-card>
 
     <!-- 表格区域 -->
     <el-table :data="tableList" style="flex:1;" v-loading="loading">
