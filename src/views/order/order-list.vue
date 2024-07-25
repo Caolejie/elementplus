@@ -2,20 +2,16 @@
   <el-card shadow="never" style="margin: 10px 0;">
     <el-row :gutter="30">
       <el-col :span="8">
-        <el-form-item label="订单ID:" style="margin-bottom: 0;">
-          <el-input v-model="search.oid" placeholder="请输入订单ID" />
+        <el-form-item label="订单号:" style="margin-bottom: 0;">
+          <el-input v-model="search.oid" placeholder="请输入订单号" />
         </el-form-item>
       </el-col>
-      <el-col :span="8">
-        <el-form-item label="用户ID:" style="margin-bottom: 0;">
-          <el-input v-model="search.userId" placeholder="请输入用户ID" />
-        </el-form-item>
-      </el-col>
+      
       <el-col :span="8">
         <el-form-item label="订单状态:" style="margin-bottom: 0;">
           <el-select v-model="search.status" placeholder="请选择订单状态" style="width:100%;" multiple>
             <el-option label="创建" value="CREATE" />
-            <el-option label="超时" value="UNPAID_OVER_TIME" />
+            <el-option label="超时" value="_OVER_TIME" />
             <el-option label="支付中" value="PAYING" />
             <el-option label="待发货" value="PAID" />
             <el-option label="申请退款" value="REQUEST_REFUND" />
@@ -28,11 +24,6 @@
       </el-col>
     </el-row>
     <el-row :gutter="30">
-      <el-col :span="16">
-        <el-form-item label="创建时间:" style="margin-bottom: 0;">
-          <el-date-picker size="small" v-model="date" @change="dataChange" value-format="YYYY-MM-DD HH:mm:ss" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" style="width:100%;"></el-date-picker>
-        </el-form-item>
-      </el-col>
 
       <el-col :span="8">
         <el-button type="primary" @click="getOrderList()">查询</el-button>
@@ -41,26 +32,41 @@
     </el-row>
   </el-card>
   <el-card>
+    
     <el-button :disabled="totalNum > 10000" :loading="exportLoading" type="primary" @click="exportExcel()" size="small" style="margin-bottom:10px;">导出 {{totalNum}} 条数据</el-button>
     <el-table :data="tableData" stripe>
-      <el-table-column prop="oid" label="订单ID" width="200" />
-      <el-table-column prop="userId" label="用户ID" />
-      <el-table-column prop="payment" label="支付价格" />
-      <el-table-column prop="price" label="原价" />
       <el-table-column label="订单状态">
         <template #default="scope">
           {{this.getStatusText(scope.row.status)}}
         </template>
       </el-table-column>
-      <!-- <el-table-column prop="payTime" label="支付时间" /> -->
-      <el-table-column prop="createTime" label="创建时间" width="180" />
-      <el-table-column prop="updateTime" label="更新时间" width="180" />
+      <el-table-column label="订单属性">
+        <template #default="scope">
+          {{this.getSourceText(scope.row.source)}}
+        </template>
+      </el-table-column>
+      <el-table-column prop="active" label="订单信息" />
+      <el-table-column label="商品内容" width="200">  
+        <template #default="scope">  
+          <!-- <img :src="scope.row.avatarUrl" alt="头像" style="width: 100%; height: auto;">  -->
+          <ul>
+            <li>{{scope.row.orderComboRels[0].comboSnapshot.productComboRelInfoVOList[0].productInfoVO.name}}</li>
+            <li>{{scope.row.orderComboRels[0].comboSnapshot.productComboRelInfoVOList[1].productInfoVO.name}}</li>
+            <li>{{scope.row.orderComboRels[0].comboSnapshot.productComboRelInfoVOList[2].productInfoVO.name}}</li>
+            <li>{{scope.row.orderComboRels[0].comboSnapshot.productComboRelInfoVOList[3].productInfoVO.name}}</li>
+            <li>{{scope.row.orderComboRels[0].comboSnapshot.productComboRelInfoVOList[4].productInfoVO.name}}</li>
+            <li>{{scope.row.orderComboRels[0].comboSnapshot.productComboRelInfoVOList[5].productInfoVO.name}}</li>
+            <!-- <li>{{scope.row.orderComboRels[0].comboSnapshot.productComboRelInfoVOList[6].productInfoVO.name}}</li> -->
+          </ul> 
+        </template>  
+      </el-table-column>  
+      
 
       <el-table-column fixed="right" label="操作" width="130">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="goOrderInfoPage(scope.row.orderId)">详情</el-button>
 
-          <el-popconfirm title="确定要操作退款吗?" @confirm="refundOrder(scope.row.orderId)" v-if="scope.row.status != 'refunded' && scope.row.status != 'unpaid_over_time'">
+          <!-- <el-popconfirm title="确定要操作退款吗?" @confirm="refundOrder(scope.row.orderId)" v-if="scope.row.status != 'refunded' && scope.row.status != '_over_time'">
             <template #reference>
               <el-button link type="primary" size="small">退款</el-button>
             </template>
@@ -70,16 +76,18 @@
             <template #reference>
               <el-button link type="primary" size="small">审核</el-button>
             </template>
-          </el-popconfirm>
+          </el-popconfirm> -->
         </template>
       </el-table-column>
 
     </el-table>
     <!-- 分页 -->
-    <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="sizes, total, prev, pager, next" :total="totalNum" :currentPage="search.pageNumNum" :pageNumSize="search.pageSize">
+    <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="sizes, total, prev, pager, next" :total="totalNum" :currentPage="search.pageNum" :pageNumSize="search.pageSize">
     </el-pagination>
   </el-card>
-
+  <div>
+    
+  </div>
 </template>
 
 <script>
@@ -112,13 +120,16 @@ export default {
     if (this.$route.query.status) {
       this.search.status = this.$route.query.status.split(",");
     }
+    if (this.$route.query.source) {
+      this.search.source = this.$route.query.source.split(",");
+    }
     this.getOrderList();
   },
   methods: {
     // 查询订单列表
     async getOrderList() {
       const res = await this.$request.post(
-        "/mall/user/api/v1/mall_order/query_order_by_page",
+        "/mall/cms/api/v1/mall_order/query_order_by_page",
         this.search
       );
       if (res.data.code === 200) {
@@ -128,24 +139,29 @@ export default {
       }
     },
     getStatusText(value) {
-      if (value == "create" || value == "paying") {
+      if (value == "unpaid") {
         return "待付款";
-      } else if (value == "pushed") {
-        return "已推送至erp";
       } else if (value == "paid") {
         return "待发货";
       } else if (value == "shipped") {
         return "已发货";
-      } else if (value == "finished") {
+      } else if (value == "completed") {
         return "已完成";
       } else if (value == "refunded") {
         return "已退款";
-      } else if (value == "request_refund") {
-        return "退款中";
-      } else if (value == "unpaid_over_time") {
-        return "超时未支付";
+      } else if (value == "refund_apply") {
+        return "申请退款中";
+      } else if (value == "cancelled") {
+        return "已取消";
       } else {
         return value;
+      }
+    },
+    getSourceText(value) {
+      if (value == "user-gift'") {
+        return "送礼订单";
+      } else {
+        return "个人订单";
       }
     },
     // 每页条数改变时触发 选择一页显示多少行
@@ -199,7 +215,7 @@ export default {
     // 点击重制按钮
     resetSearch() {
       let search = {
-        pageNum: this.search.pageNumNum,
+        pageNum: this.search.pageNum,
         pageSize: this.search.pageSize,
       };
       this.search = search;
