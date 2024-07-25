@@ -25,9 +25,9 @@
           </el-col>
           <el-col :xs="24" :sm="12" :md="8" :lg="6">
             <el-form-item label="亲友问卷状态:">
-              <el-select v-model="search.type" placeholder="请选择" style="width:100%;" clearable >
-                <el-option label="完成亲友问卷" value="完成个人问卷" />
-                <el-option label="未完成亲友问卷" value="未完成个人问卷" />
+              <el-select v-model="search.reation" placeholder="请选择" style="width:100%;" clearable >
+                <el-option label="完成亲友问卷" value="完成亲友问卷" />
+                <el-option label="未完成亲友问卷" value="未完成亲友问卷" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -67,7 +67,7 @@
       <el-table-column prop="phone" label="手机号" />
       <el-table-column prop="umionld" label="问卷状态" />
       <el-table-column prop="openId" label="个人订单状态"  />
-      <el-table-column prop="openId" label="亲友订单状态"  />
+      <el-table-column prop="" label="亲友订单状态"  />
       <el-table-column prop="userBizInfo" label="送礼状态"  />
       <el-table-column fixed="right" label="操作" width="100">
         <template #default="scope">
